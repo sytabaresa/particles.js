@@ -95,7 +95,7 @@ particlesJS('particles-js',
         "ondiv" : {
           "enable": true,
           "mode": "repulse",
-          "divName": "repulse-div"
+          "el": "repulse-div"
         },
         "resize": true
       },
