@@ -1014,31 +1014,36 @@ var pJS = function(tag_id, params){
 
       }
 
-    } else if (pJS.interactivity.events.ondiv.enable ) {
+    } else if (pJS.interactivity.events.ondiv.enable) {
       var elem = document.getElementById(pJS.interactivity.events.ondiv.divName);
-      var dx = (elem.offsetLeft + elem.offsetWidth / 2) * pJS.canvas.pxratio,
-          dy = (elem.offsetTop + elem.offsetHeight / 2) * pJS.canvas.pxratio;
 
-      var dx_div = p.x - dx,
-          dy_div = p.y - dy,
+      var pos_x = (elem.offsetLeft + elem.offsetWidth / 2),
+          pos_y = (elem.offsetTop + elem.offsetHeight / 2),
+          div_width = elem.offsetWidth / 2;
+
+      if(pJS.tmp.retina) {
+        pos_x *= pJS.canvas.pxratio;
+        pos_y *= pJS.canvas.pxratio;
+        div_width *= pJS.canvas.pxratio
+      }
+
+      var dx_div = p.x - pos_x,
+          dy_div = p.y - pos_y,
           dist_div = Math.sqrt(dx_div*dx_div + dy_div*dy_div);
 
       var normVec = {x: dx_div / dist_div, y: dy_div / dist_div},
-          repulseRadius = elem.offsetWidth / 2,
+          repulseRadius = div_width,
           velocity = 100,
-          repulseFactor = clamp((1/repulseRadius)*(-1*Math.pow(dist_div/repulseRadius,2)+1)*repulseRadius*velocity, 0, 50);
+          repulseFactor = clamp((1/repulseRadius)*(-1*Math.pow(dist_div/repulseRadius,4)+1)*repulseRadius*velocity, 0, 50);
 
       var pos = {
         x: p.x + normVec.x * repulseFactor,
         y: p.y + normVec.y  * repulseFactor,
       }
 
-
       p.x = pos.x;
       p.y = pos.y;
-      //do stuff here
     }
-
   }
 
 
